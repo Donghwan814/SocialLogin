@@ -15,6 +15,8 @@ import org.springframework.web.method.annotation.MethodArgumentTypeMismatchExcep
 import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 
+import static org.springframework.http.HttpStatus.*;
+
 @RestControllerAdvice // @ControllerAdvice(모든 컨트롤러 예외를 가로채 처리하는 클래스임을 명시) + @ResponseEntity.JSON 형태 응답을 자동으로 처리할 때 사용
 
 /**
