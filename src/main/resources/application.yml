@@ -1,0 +1,16 @@
+spring:
+  profiles:
+    include: dev
+
+  datasource:
+    url: jdbc:mysql://localhost:3306/social_login
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+
+jwt:
+  access-token-expiration: 3600000
+  refresh-token-expiration: 604800000
