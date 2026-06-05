@@ -1,0 +1,121 @@
+spring:
+  # Spring Boot 애플리케이션 이름입니다. 로그와 actuator 등에서 식별값으로 쓰입니다.
+  application:
+    name: module
+
+  # 루트의 .env 파일을 properties 형식으로 읽습니다. optional이라 파일이 없어도 서버가 바로 실패하지는 않습니다.
+  config:
+    import: optional:file:.env[.properties]
+
+  # MySQL 연결 설정입니다. 실제 값은 .env에서 주입하는 것을 권장합니다.
+  datasource:
+    url: ${DB_URL:jdbc:mysql://localhost:3306/loginmodule?serverTimezone=Asia/Seoul&characterEncoding=UTF-8}
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
+    driver-class-name: ${DB_DRIVER_CLASS_NAME:com.mysql.cj.jdbc.Driver}
+
+  # JPA/Hibernate 설정입니다.
+  jpa:
+    hibernate:
+      # 개발 중에는 update를 쓰지만 운영에서는 validate 또는 migration 도구 사용을 권장합니다.
+      ddl-auto: ${JPA_DDL_AUTO:update}
+    # SQL 로그 출력 여부입니다.
+    show-sql: ${JPA_SHOW_SQL:true}
+    properties:
+      hibernate:
+        # SQL을 보기 좋게 줄바꿈해서 출력합니다.
+        format_sql: true
+
+app:
+  # redirect URI 기본값을 만들 때 쓰는 우리 서버의 외부 접근 주소입니다.
+  base-url: ${APP_BASE_URL:http://localhost:8080}
+  # OAuth provider가 authorization code를 돌려줄 프론트엔드 앱 주소입니다.
+  frontend-base-url: ${APP_FRONTEND_BASE_URL:http://localhost:3000}
+  cors:
+    # 프론트엔드 origin 목록입니다. credentials=true라서 wildcard(*)는 쓰지 않습니다.
+    allowed-origins: ${APP_CORS_ALLOWED_ORIGINS:http://localhost:3000,http://localhost:8080}
+
+springdoc:
+  # OpenAPI JSON 문서가 노출될 경로입니다.
+  api-docs:
+    path: /v3/api-docs
+  # Swagger UI가 노출될 경로입니다.
+  swagger-ui:
+    path: /swagger-ui.html
+    operations-sorter: method
+    tags-sorter: alpha
+
+jwt:
+  # JWT_SECRET must be at least 32 bytes in production.
+  # JWT 서명/검증에 사용하는 secret입니다.
+  secret: ${JWT_SECRET}
+  # Access Token 만료 시간입니다. 단위는 ms입니다.
+  access-token-expiration: ${JWT_ACCESS_TOKEN_EXPIRATION:3600000}
+  # Refresh Token 만료 시간입니다. 단위는 ms입니다.
+  refresh-token-expiration: ${JWT_REFRESH_TOKEN_EXPIRATION:604800000}
+
+oauth:
+  # provider별 redirect-uri 기본값의 base입니다. JWT가 callback 화면에 노출되지 않도록 프론트엔드 callback을 기본값으로 둡니다.
+  redirect-base-uri: ${OAUTH_REDIRECT_BASE_URI:${app.frontend-base-url}/oauth/callback}
+
+  providers:
+    # Google OAuth 2.0 / OpenID Connect 설정입니다.
+    google:
+      client-id: ${GOOGLE_CLIENT_ID}
+      client-secret: ${GOOGLE_CLIENT_SECRET}
+      redirect-uri: ${GOOGLE_REDIRECT_URI:${oauth.redirect-base-uri}/google}
+      authorization-uri: ${GOOGLE_AUTHORIZATION_URI:https://accounts.google.com/o/oauth2/v2/auth}
+      token-uri: ${GOOGLE_TOKEN_URI:https://oauth2.googleapis.com/token}
+      user-info-uri: ${GOOGLE_USER_INFO_URI:https://openidconnect.googleapis.com/v1/userinfo}
+      scopes:
+        - openid
+        - profile
+        - email
+
+    # Kakao Login REST API 설정입니다.
+    kakao:
+      client-id: ${KAKAO_CLIENT_ID}
+      client-secret: ${KAKAO_CLIENT_SECRET:}
+      redirect-uri: ${KAKAO_REDIRECT_URI:${oauth.redirect-base-uri}/kakao}
+      authorization-uri: ${KAKAO_AUTHORIZATION_URI:https://kauth.kakao.com/oauth/authorize}
+      token-uri: ${KAKAO_TOKEN_URI:https://kauth.kakao.com/oauth/token}
+      user-info-uri: ${KAKAO_USER_INFO_URI:https://kapi.kakao.com/v2/user/me}
+      scopes:
+        - account_email
+        - profile_nickname
+
+    # Naver Login API 설정입니다.
+    naver:
+      client-id: ${NAVER_CLIENT_ID}
+      client-secret: ${NAVER_CLIENT_SECRET}
+      redirect-uri: ${NAVER_REDIRECT_URI:${oauth.redirect-base-uri}/naver}
+      authorization-uri: ${NAVER_AUTHORIZATION_URI:https://nid.naver.com/oauth2.0/authorize}
+      token-uri: ${NAVER_TOKEN_URI:https://nid.naver.com/oauth2.0/token}
+      user-info-uri: ${NAVER_USER_INFO_URI:https://openapi.naver.com/v1/nid/me}
+      scopes: []
+
+    # GitHub OAuth App 설정입니다.
+    github:
+      client-id: ${GITHUB_CLIENT_ID}
+      client-secret: ${GITHUB_CLIENT_SECRET}
+      redirect-uri: ${GITHUB_REDIRECT_URI:${oauth.redirect-base-uri}/github}
+      authorization-uri: ${GITHUB_AUTHORIZATION_URI:https://github.com/login/oauth/authorize}
+      token-uri: ${GITHUB_TOKEN_URI:https://github.com/login/oauth/access_token}
+      user-info-uri: ${GITHUB_USER_INFO_URI:https://api.github.com/user}
+      email-uri: ${GITHUB_EMAIL_URI:https://api.github.com/user/emails}
+      api-version: ${GITHUB_API_VERSION:2026-03-10}
+      scopes:
+        - read:user
+        - user:email
+
+    # Meta Facebook Login 설정입니다.
+    facebook:
+      client-id: ${FACEBOOK_CLIENT_ID}
+      client-secret: ${FACEBOOK_CLIENT_SECRET}
+      redirect-uri: ${FACEBOOK_REDIRECT_URI:${oauth.redirect-base-uri}/facebook}
+      authorization-uri: ${FACEBOOK_AUTHORIZATION_URI:https://www.facebook.com/${FACEBOOK_GRAPH_API_VERSION:v21.0}/dialog/oauth}
+      token-uri: ${FACEBOOK_TOKEN_URI:https://graph.facebook.com/${FACEBOOK_GRAPH_API_VERSION:v21.0}/oauth/access_token}
+      user-info-uri: ${FACEBOOK_USER_INFO_URI:https://graph.facebook.com/${FACEBOOK_GRAPH_API_VERSION:v21.0}/me?fields=id,name,email}
+      scopes:
+        - email
+        - public_profile

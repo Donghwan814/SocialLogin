@@ -1,0 +1,93 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="920" viewBox="0 0 1280 920">
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L0,6 L9,3 z" fill="#333333"/>
+    </marker>
+    <style>
+      .bg { fill: #f8fafc; }
+      .lane { fill: #ffffff; stroke: #cbd5e1; stroke-width: 2; }
+      .title { font-family: Arial, sans-serif; font-size: 28px; font-weight: 700; fill: #0f172a; }
+      .actor { font-family: Arial, sans-serif; font-size: 20px; font-weight: 700; fill: #0f172a; }
+      .note { font-family: Arial, sans-serif; font-size: 16px; fill: #334155; }
+      .small { font-family: Arial, sans-serif; font-size: 14px; fill: #475569; }
+      .arrow { stroke: #333333; stroke-width: 2.2; fill: none; marker-end: url(#arrow); }
+      .return { stroke: #64748b; stroke-width: 2.2; fill: none; stroke-dasharray: 8 6; marker-end: url(#arrow); }
+      .boxClient { fill: #dbeafe; stroke: #2563eb; stroke-width: 2; }
+      .boxBackend { fill: #dcfce7; stroke: #16a34a; stroke-width: 2; }
+      .boxSocial { fill: #fee2e2; stroke: #dc2626; stroke-width: 2; }
+      .pill { fill: #ffffff; stroke: #94a3b8; stroke-width: 1.5; }
+      .warn { fill: #fff7ed; stroke: #f97316; stroke-width: 2; }
+    </style>
+  </defs>
+
+  <rect class="bg" x="0" y="0" width="1280" height="920"/>
+  <text class="title" x="50" y="55">OAuth2 소셜 로그인 흐름</text>
+  <text class="note" x="50" y="86">프론트엔드가 code를 받고 백엔드가 provider token/user-info를 처리하는 방식</text>
+
+  <rect class="lane" x="40" y="125" width="360" height="690" rx="14"/>
+  <rect class="lane" x="460" y="125" width="360" height="690" rx="14"/>
+  <rect class="lane" x="880" y="125" width="360" height="690" rx="14"/>
+
+  <text class="actor" x="160" y="165">클라이언트</text>
+  <text class="small" x="126" y="190">브라우저 / 프론트엔드</text>
+  <text class="actor" x="585" y="165">백엔드 서버</text>
+  <text class="small" x="548" y="190">Spring Boot API</text>
+  <text class="actor" x="1008" y="165">소셜 로그인 서버</text>
+  <text class="small" x="987" y="190">Google / Kakao / Naver / Facebook / GitHub</text>
+
+  <line x1="220" y1="215" x2="220" y2="770" stroke="#94a3b8" stroke-width="2" stroke-dasharray="6 8"/>
+  <line x1="640" y1="215" x2="640" y2="770" stroke="#94a3b8" stroke-width="2" stroke-dasharray="6 8"/>
+  <line x1="1060" y1="215" x2="1060" y2="770" stroke="#94a3b8" stroke-width="2" stroke-dasharray="6 8"/>
+
+  <rect class="boxClient" x="70" y="225" width="300" height="58" rx="10"/>
+  <text class="note" x="92" y="250">1. 로그인 버튼 클릭</text>
+  <text class="small" x="92" y="272">예: Google로 로그인</text>
+
+  <path class="arrow" d="M220 315 C340 315 500 315 640 315"/>
+  <rect class="boxBackend" x="480" y="285" width="320" height="60" rx="10"/>
+  <text class="note" x="500" y="309">2. GET /login-url</text>
+  <text class="small" x="500" y="331">provider 로그인 URL 요청</text>
+
+  <rect class="boxBackend" x="485" y="370" width="310" height="68" rx="10"/>
+  <text class="note" x="505" y="395">3. authorize URL 생성</text>
+  <text class="small" x="505" y="417">client_id, redirect_uri, scope, state 포함</text>
+
+  <path class="return" d="M640 470 C520 470 360 470 220 470"/>
+  <rect class="boxClient" x="70" y="440" width="300" height="60" rx="10"/>
+  <text class="note" x="92" y="464">4. loginUrl + state 받기</text>
+  <text class="small" x="92" y="486">브라우저를 loginUrl로 이동</text>
+
+  <path class="arrow" d="M220 535 C435 535 820 535 1060 535"/>
+  <rect class="boxSocial" x="910" y="505" width="300" height="60" rx="10"/>
+  <text class="note" x="930" y="529">5. provider 로그인 / 동의</text>
+  <text class="small" x="930" y="551">사용자가 계정 인증 완료</text>
+
+  <path class="return" d="M1060 605 C825 605 455 605 220 605"/>
+  <rect class="boxClient" x="70" y="575" width="300" height="60" rx="10"/>
+  <text class="note" x="92" y="599">6. code + state 수신</text>
+  <text class="small" x="92" y="621">프론트 callback URL로 전달</text>
+
+  <path class="arrow" d="M220 665 C340 665 500 665 640 665"/>
+  <rect class="boxBackend" x="480" y="635" width="320" height="60" rx="10"/>
+  <text class="note" x="500" y="659">7. POST /login(code)</text>
+  <text class="small" x="500" y="681">body: code, state</text>
+
+  <path class="arrow" d="M640 725 C760 725 920 725 1060 725"/>
+  <rect class="boxSocial" x="910" y="695" width="300" height="60" rx="10"/>
+  <text class="note" x="930" y="719">8. code로 token 요청</text>
+  <text class="small" x="930" y="741">provider access token 발급</text>
+
+  <path class="return" d="M1060 785 C925 785 785 785 640 785"/>
+  <rect class="boxBackend" x="480" y="755" width="320" height="60" rx="10"/>
+  <text class="note" x="500" y="779">9. 사용자 정보 조회 / 가입 처리</text>
+  <text class="small" x="500" y="801">우리 서비스 AT / RT 생성</text>
+
+  <path class="return" d="M640 845 C520 845 360 845 220 845"/>
+  <rect class="boxClient" x="70" y="815" width="300" height="60" rx="10"/>
+  <text class="note" x="92" y="839">10. Access Token / Refresh Token</text>
+  <text class="small" x="92" y="861">프론트 저장 후 API 호출에 사용</text>
+
+  <rect class="warn" x="430" y="835" width="405" height="62" rx="10"/>
+  <text class="note" x="450" y="860">redirect_uri mismatch 체크</text>
+  <text class="small" x="450" y="883">개발자 콘솔 URI와 로그인 URL의 redirect_uri가 완전히 같아야 합니다.</text>
+</svg>
