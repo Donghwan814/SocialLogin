@@ -91,7 +91,7 @@ public class SecurityConfig {
      */
     @Bean
     public CorsConfigurationSource corsConfigurationSource(
-            @Value("${app.cors.allowed-origins:http://localhost:3000}") String allowedOrigins
+            @Value("${app.cors.allowed-origins:http://localhost:8080}") String allowedOrigins
     ) {
         // Spring CORS 설정 객체를 생성합니다.
         CorsConfiguration configuration = new CorsConfiguration();

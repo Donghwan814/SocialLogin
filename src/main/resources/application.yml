@@ -30,10 +30,10 @@ app:
   # redirect URI 기본값을 만들 때 쓰는 우리 서버의 외부 접근 주소입니다.
   base-url: ${APP_BASE_URL:http://localhost:8080}
   # OAuth provider가 authorization code를 돌려줄 프론트엔드 앱 주소입니다.
-  frontend-base-url: ${APP_FRONTEND_BASE_URL:http://localhost:3000}
+  frontend-base-url: ${APP_FRONTEND_BASE_URL:http://localhost:8080}
   cors:
     # 프론트엔드 origin 목록입니다. credentials=true라서 wildcard(*)는 쓰지 않습니다.
-    allowed-origins: ${APP_CORS_ALLOWED_ORIGINS:http://localhost:3000,http://localhost:8080}
+    allowed-origins: ${APP_CORS_ALLOWED_ORIGINS:http://localhost:8080}
 
 springdoc:
   # OpenAPI JSON 문서가 노출될 경로입니다.
